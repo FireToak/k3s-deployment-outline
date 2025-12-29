@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-bucket
+  namespace: outline
+  labels:
+    app: minio-client
+spec:
+  template:
+    metadata:
+      labels:
+        app: minio-client
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: minio-client
+        image: minio/mc:RELEASE.2025-08-13T08-35-41Z-cpuv1
+        command: ["/bin/sh", "-c"]
+        args: ["mc alias set minio $AWS_S3_UPLOAD_BUCKET_URL $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY && mc mb -p minio/$AWS_S3_UPLOAD_BUCKET_NAME"]
+        env:
+          - name: AWS_S3_UPLOAD_BUCKET_URL
+            valueFrom:
+             configMapKeyRef:
+               name: outline-config
+               key: AWS_S3_UPLOAD_BUCKET_URL
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+             secretKeyRef:
+               name: outline-secret
+               key: AWS_ACCESS_KEY_ID
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: outline-secret
+                key: AWS_SECRET_ACCESS_KEY
+          - name: AWS_S3_UPLOAD_BUCKET_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: outline-config
+                key: AWS_S3_UPLOAD_BUCKET_NAME

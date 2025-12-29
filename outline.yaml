@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: outline
+  namespace: outline
+  labels:
+    app: outline
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: outline
+  template:
+    metadata:
+      labels:
+        app: outline
+    spec:
+      containers:
+      - name: outline
+        image: docker.getoutline.com/outlinewiki/outline:1.1.0
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            memory: "512Mi"  # Réservé au démarrage
+            cpu: "250m"    # 0.25 CPU réservé
+          limits:
+            memory: "1Gi"  # Plafond indépassable (sinon Kill)
+            cpu: "500m"      # Plafond CPU
+        envFrom:
+        - configMapRef:
+            name: outline-config
+        - secretRef:
+            name: outline-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: outline # Nom DNS : outline.outline.svc.cluster.local
+  namespace: outline
+spec:
+  type: ClusterIP
+  ports:
+  - port: 3000
+    targetPort: 3000
+  selector:
+    app: outline

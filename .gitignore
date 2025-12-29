@@ -1,0 +1,14 @@
+# --- Secrets et Configuration locale ---
+# Ignore tous les fichiers contenant "secret" dans le nom
+*secret.yaml
+*.env
+
+# Exception pour les fichiers d'exemple
+!secret.example.yaml
+!outline-secret.example.yaml
+
+# --- Fichiers Système et IDE ---
+.DS_Store
+.vscode/
+.idea/
+*.swp
