@@ -30,7 +30,7 @@ Le déploiement orchestre les composants suivants :
 
 1.  **Cloner le dépôt :**
     ```bash
-    git clone [https://github.com/FireToak/k3s-deployment-outline.git](https://github.com/FireToak/k3s-deployment-outline.git)
+    git clone https://github.com/FireToak/k3s-deployment-outline.git
     cd k3s-deployment-outline
     ```
 
