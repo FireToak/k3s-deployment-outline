@@ -12,3 +12,19 @@ spec:
       services:
         - name: outline
           port: 3000
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: minio-api
+  namespace: outline
+spec:
+  entryPoints:
+    - web
+  routes:
+    # Route pour l'API S3 (Celle utilisée par Outline et le navigateur)
+    - match: Host(`minio.loutik.fr`)
+      kind: Rule
+      services:
+        - name: minio
+          port: 9000
