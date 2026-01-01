@@ -16,6 +16,8 @@ spec:
       labels:
         app: PostgreSQL
     spec:
+      nodeSelector:
+        stockage: persistant01
       containers:
       - name: postgres
         image: postgres:18.1-alpine3.23
